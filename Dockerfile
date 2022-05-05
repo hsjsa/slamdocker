@@ -5,7 +5,8 @@ RUN apt-get -qq update && \
     apt-get -qq install python3 -y && \
     apt-get -qq install python3-pip -y && \
     apt-get -qq install python3-lxml -y && \
-    apt-get -qq install aria2 -y
+    apt-get -qq install aria2 -y \
+    apt-get -qq install git -y
 WORKDIR /usr/src/app
 RUN chmod 777 /usr/src/app
 RUN git clone https://github.com/meganz/sdk.git --depth=1 -b v$MEGA_SDK_VERSION ~/home/sdk \
