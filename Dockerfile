@@ -1,6 +1,8 @@
 FROM ubuntu:20.04
-RUN apt-get -qq update -y && DEBIAN_FRONTEND="noninteractive" && apt-get -y upgrade && \
-    apt-get -qq install -y software-properties-common apt-get install -y python3 python3-pip python3-lxml aria2
+RUN apt-get --allow-releaseinfo-change update && \
+    apt-get -qq update && \
+    apt-get install -y software-properties-common && \
+    apt-get install -y python3 python3-pip python3-lxml aria2
 WORKDIR /usr/src/app
 RUN chmod 777 /usr/src/app
 RUN git clone https://github.com/meganz/sdk.git --depth=1 -b v$MEGA_SDK_VERSION ~/home/sdk \
