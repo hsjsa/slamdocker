@@ -6,13 +6,13 @@ RUN apt-get -qq update && \
     apt-get -qq install python3-pip -y && \
     apt-get -qq install python3-lxml -y && \
     apt-get -qq install aria2 -y && \
-    apt-get -qq install git -y
-ADD file:e36038a1f6ee02f3f9a7db183e116f58d277e97cb7e71032634097d802654d02 in / 
+    apt-get -qq install git -y 
 WORKDIR /usr/src/app
 RUN chmod 777 /usr/src/app
 ENV MEGA_SDK_VERSION=3.11.3
 RUN git clone https://github.com/meganz/sdk.git --depth=1 -b v$MEGA_SDK_VERSION ~/home/sdk && \
-    cd ~/home/sdk && rm -rf .git && \
+    cd ~/home/sdk && \
+    rm -rf .git && \
     autoupdate -fIv && \
     ./autogen.sh && \
     ./configure --disable-silent-rules --enable-python --with-sodium --disable-examples && \
