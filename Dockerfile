@@ -1,18 +1,26 @@
-FROM ubuntu:20.04
-RUN apt-get -qq update && \
-    apt-get -qq upgrade && \
-    apt-get -qq install software-properties-common -y && \
-    apt-get -qq install python3 -y && \
-    apt-get -qq install python3-pip -y && \
-    apt-get -qq install python3-lxml -y && \
-    apt-get -qq install aria2 -y && \
-    apt-get -qq install git -y 
+FROM lzzy12/mega-sdk-python:latest
+
 WORKDIR /usr/src/app
 RUN chmod 777 /usr/src/app
-ENV MEGA_SDK_VERSION=3.11.3
+
+RUN apt-get --allow-releaseinfo-change update && \
+    apt-get -qq update && \
+    apt-get install -y software-properties-common && \
+    rm -rf /var/lib/apt/lists/* && \
+    apt-add-repository non-free && \
+    apt-get -qq update && \
+    apt-get -qq install -y p7zip-full p7zip-rar aria2 curl pv jq ffmpeg locales python3-lxml && \
+    apt-get purge -y software-properties-common
+
 COPY requirements.txt .
+COPY extract /usr/local/bin
+RUN chmod +x /usr/local/bin/extract
 RUN pip3 install --no-cache-dir -r requirements.txt
-RUN apt-get -y update && apt-get -y upgrade && apt-get -y autoremove && apt-get -y autoclean
-ENV TZ=Asia/Kolkata
-ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en
+RUN locale-gen en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
+COPY . .
+RUN chmod +x aria.sh
+
 CMD ["bash","start.sh"]
